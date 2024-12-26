@@ -5,6 +5,12 @@ fun main() {
     var playerChoice = ""
     println("Rock, Paper or Scissors? Enter your choice")
     playerChoice = readln()
+    val validChoices = arrayListOf("Rock", "Paper", "Scissors")
+    while (!validChoices.contains(playerChoice)) {
+        println("False input: Rock, Paper or Scissors? Enter your choice")
+        playerChoice = readln()
+    }
+
     val randomNumber = (1..3).random()
     computerChoice = when (randomNumber) {
         1 -> {
