@@ -7,8 +7,6 @@ fun main(){
 
 }
 
-
-
 fun makeCoffee(sugarCount : Int, name: String){
     if (sugarCount == 1) {
         println("Coffee with 1 spoon of sugar for $name")
