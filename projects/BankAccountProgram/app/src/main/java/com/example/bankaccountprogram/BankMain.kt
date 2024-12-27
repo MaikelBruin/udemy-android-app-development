@@ -13,6 +13,7 @@ fun main() {
     println(bankAccount.displayBalance())
     println(bankAccount.displayTransactionHistory())
     bankAccount.withdraw(2000.0)
+    println(bankAccount.displayBalance())
     println(bankAccount.displayTransactionHistory())
 
 }
