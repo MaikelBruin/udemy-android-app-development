@@ -137,7 +137,16 @@ fun ShoppingListItem(
                 shape = RoundedCornerShape(20)
             )
     ) {
-        Text(text = shoppingItem.name, modifier = Modifier.padding(8.dp))
+        Column(
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Text(text = shoppingItem.name)
+        }
+        Column(
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Text(text = shoppingItem.quantity.toString())
+        }
     }
 }
 
