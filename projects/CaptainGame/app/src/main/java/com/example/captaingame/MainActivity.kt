@@ -52,6 +52,7 @@ class MainActivity : ComponentActivity() {
         ) {
             Text(text = "Treasures found: ${treasuresFound.value}")
             Text(text = "Current Direction: ${direction.value}")
+            Text(text = stormOrTreasure.value)
             Button(onClick = {
                 direction.value = "East"
                 if (Random.nextBoolean()) {
@@ -96,7 +97,6 @@ class MainActivity : ComponentActivity() {
             }) {
                 Text(text = "Sail South")
             }
-            Text(text = stormOrTreasure.value)
         }
     }
 }
