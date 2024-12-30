@@ -36,10 +36,6 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CounterApp(counterViewModel: CounterViewModel) {
-    val count = remember {
-        counterViewModel.count
-    }
-
     Column {
         Button(onClick = { counterViewModel.increment() }) {
             Text(text = "Increment")
@@ -47,6 +43,6 @@ fun CounterApp(counterViewModel: CounterViewModel) {
         Button(onClick = { counterViewModel.decrement() }) {
             Text(text = "Decrement")
         }
-        Text(text = "Count: $count")
+        Text(text = "Count: ${counterViewModel.count.value}")
     }
 }
