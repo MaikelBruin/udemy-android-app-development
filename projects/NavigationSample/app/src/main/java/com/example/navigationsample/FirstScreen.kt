@@ -1,5 +1,6 @@
 package com.example.navigationsample
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +11,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -24,7 +26,7 @@ fun FirstScreen(navigateToSecondScreen: (String, Int) -> Unit) {
         mutableStateOf("")
     }
     val age = remember {
-        mutableStateOf(18)
+        mutableIntStateOf(18)
     }
     Column(
         modifier = Modifier
@@ -34,19 +36,20 @@ fun FirstScreen(navigateToSecondScreen: (String, Int) -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "This is the first screen",
-            fontSize = 24.sp
+            text = "This is the first screen", fontSize = 24.sp
         )
         Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(value = name.value,
-            onValueChange = {
-                name.value = it
-            })
-        OutlinedTextField(value = age.value.toString(),
-            onValueChange = {
-                age.value = it.toIntOrNull() ?: 18
-            })
-        Button(onClick = { navigateToSecondScreen(name.value, age.value) }) {
+        OutlinedTextField(value = name.value, onValueChange = {
+            name.value = it
+        })
+        OutlinedTextField(value = age.intValue.toString(), onValueChange = {
+            age.intValue = it.toIntOrNull() ?: 18
+        })
+        Button(onClick = {
+            if (name.value.isNotBlank() && age.intValue > 0) {
+                navigateToSecondScreen(name.value, age.intValue)
+            }
+        }) {
             Text(text = "Go to second screen")
         }
     }

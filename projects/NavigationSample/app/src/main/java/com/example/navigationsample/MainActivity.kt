@@ -54,8 +54,8 @@ fun MyApp() {
         }
         composable(route = "SecondScreen/{name}/{age}") {
             val name = it.arguments?.getString("name") ?: "no name"
-            val age = it.arguments?.getInt("age") ?: 18
-            SecondScreen(name, age, {
+            val age = it.arguments?.getString("age") ?: "18"
+            SecondScreen(name, age.toInt(), {
                 navController.navigate("FirstScreen")
             }, {
                 navController.navigate("ThirdScreen")
