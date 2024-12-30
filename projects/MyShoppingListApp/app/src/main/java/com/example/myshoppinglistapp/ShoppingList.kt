@@ -35,10 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 data class ShoppingItem(
-    val id: Int,
-    var name: String,
-    var quantity: Int,
-    var isEditing: Boolean = false
+    val id: Int, var name: String, var quantity: Int, var isEditing: Boolean = false
 )
 
 @Composable
@@ -55,12 +52,10 @@ fun ShoppingListApp() {
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center
+        modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center
     ) {
         Button(
-            onClick = { showDialog = true },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            onClick = { showDialog = true }, modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
             Text(text = "Add item")
         }
@@ -69,15 +64,32 @@ fun ShoppingListApp() {
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            items(shoppingItems) {
-                ShoppingListItem(shoppingItem = it, onEditClick = { /*TODO*/ }, {})
+            items(shoppingItems) { item ->
+                if (item.isEditing) {
+                    ShoppingItemEditor(item = item, onEditComplete = { editedName, editedQuantity ->
+                        shoppingItems = shoppingItems.map {
+                            it.copy(isEditing = false)
+                        }
+                        val editedItem = shoppingItems.find { it.id == item.id }
+                        editedItem?.let {
+                            it.name = editedName
+                            it.quantity = editedQuantity
+                        }
+                    })
+                } else {
+                    ShoppingListItem(shoppingItem = item, onEditClick = {
+                        //find out which item we are editing and changing its isEditing boolean to true
+                        shoppingItems = shoppingItems.map { it.copy(isEditing = it.id == item.id) }
+                    }, onDeleteClick = {
+                        shoppingItems -= item
+                    })
+                }
             }
         }
     }
 
     if (showDialog) {
-        AlertDialog(
-            onDismissRequest = { showDialog = false },
+        AlertDialog(onDismissRequest = { showDialog = false },
             title = { Text(text = "Add shopping item") },
             text = {
                 Column {
@@ -125,8 +137,7 @@ fun ShoppingListApp() {
                         Text(text = "Cancel")
                     }
                 }
-            }
-        )
+            })
     }
 }
 
@@ -176,18 +187,16 @@ fun ShoppingItemEditor(item: ShoppingItem, onEditComplete: (String, Int) -> Unit
 
 @Composable
 fun ShoppingListItem(
-    shoppingItem: ShoppingItem,
-    onEditClick: () -> Unit,
-    onDeleteClick: () -> Unit
+    shoppingItem: ShoppingItem, onEditClick: () -> Unit, onDeleteClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth()
             .border(
-                border = BorderStroke(width = 2.dp, Color.Black),
-                shape = RoundedCornerShape(20)
-            )
+                border = BorderStroke(width = 2.dp, Color.Black), shape = RoundedCornerShape(20)
+            ),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
             modifier = Modifier.padding(8.dp)
