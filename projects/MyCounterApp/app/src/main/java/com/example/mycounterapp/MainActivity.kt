@@ -13,13 +13,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mycounterapp.ui.theme.MyCounterAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val viewModel: CounterViewModel = CounterViewModel()
+            val viewModel: CounterViewModel = viewModel()
             MyCounterAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
