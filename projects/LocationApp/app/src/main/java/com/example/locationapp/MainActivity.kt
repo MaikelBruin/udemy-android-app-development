@@ -88,7 +88,8 @@ fun LocationDisplay(locationUtils: LocationUtils, viewModel: LocationViewModel, 
         verticalArrangement = Arrangement.Center
     ) {
         if (location != null) {
-            Text("Address: ${location.latitude} ${location.longitude}")
+            val address = locationUtils.reverseGeocodeLocation(location)
+            Text("Address: ${location.latitude} ${location.longitude} \n $address")
         } else {
             Text(text = "Location not available")
         }
