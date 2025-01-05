@@ -46,11 +46,13 @@ fun MyApp(viewModel: LocationViewModel) {
     val context = LocalContext.current
     val locationUtils = LocationUtils(context)
 
-    LocationDisplay(locationUtils = locationUtils, context = context)
+    LocationDisplay(locationUtils = locationUtils, viewModel = viewModel, context = context)
 }
 
 @Composable
-fun LocationDisplay(locationUtils: LocationUtils, context: Context) {
+fun LocationDisplay(locationUtils: LocationUtils, viewModel: LocationViewModel, context: Context) {
+
+    val location = viewModel.location.value
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
         onResult = { permissions ->
@@ -76,6 +78,8 @@ fun LocationDisplay(locationUtils: LocationUtils, context: Context) {
                         Toast.LENGTH_LONG
                     ).show()
                 }
+            } else {
+                locationUtils.requestLocationUpdates(viewModel)
             }
         })
     Column(
@@ -83,11 +87,15 @@ fun LocationDisplay(locationUtils: LocationUtils, context: Context) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Location not available")
+        if (location != null) {
+            Text("Address: ${location.latitude} ${location.longtitude}")
+        } else {
+            Text(text = "Location not available")
+        }
 
         Button(onClick = {
             if (locationUtils.hasLocationPermission(context)) {
-                //do nothing
+                locationUtils.requestLocationUpdates(viewModel)
             } else {
                 //request permission
                 requestPermissionLauncher.launch(
