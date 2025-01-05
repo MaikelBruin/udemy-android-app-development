@@ -88,7 +88,7 @@ fun LocationDisplay(locationUtils: LocationUtils, viewModel: LocationViewModel, 
         verticalArrangement = Arrangement.Center
     ) {
         if (location != null) {
-            Text("Address: ${location.latitude} ${location.longtitude}")
+            Text("Address: ${location.latitude} ${location.longitude}")
         } else {
             Text(text = "Location not available")
         }

@@ -24,7 +24,7 @@ class LocationUtils(val context: Context) {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
                 locationResult.lastLocation?.let {
-                    val location = LocationData(latitude = it.latitude, longtitude = it.longitude)
+                    val location = LocationData(latitude = it.latitude, longitude = it.longitude)
                     viewModel.updateLocation(location)
                 }
             }
