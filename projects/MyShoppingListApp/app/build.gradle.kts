@@ -18,6 +18,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        manifestPlaceholders["mapsSdkApiKey"] = project.properties["MAPS_SDK_API_KEY"] ?: "default"
     }
 
     buildTypes {
