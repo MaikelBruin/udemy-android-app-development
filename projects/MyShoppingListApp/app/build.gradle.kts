@@ -7,6 +7,10 @@ android {
     namespace = "com.example.myshoppinglistapp"
     compileSdk = 34
 
+    buildFeatures {
+        buildConfig = true // Enable BuildConfig generation
+    }
+
     defaultConfig {
         applicationId = "com.example.myshoppinglistapp"
         minSdk = 24
@@ -19,6 +23,8 @@ android {
             useSupportLibrary = true
         }
         manifestPlaceholders["mapsSdkApiKey"] = project.properties["MAPS_SDK_API_KEY"] ?: "default"
+        buildConfigField("String", "mapsSdkApiKey", "\"${project.properties["MAPS_SDK_API_KEY"] ?: "default"}\"")
+
     }
 
     buildTypes {
