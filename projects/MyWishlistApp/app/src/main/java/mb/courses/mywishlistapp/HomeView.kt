@@ -16,6 +16,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -27,8 +28,7 @@ import mb.courses.mywishlistapp.data.Wish
 
 @Composable
 fun HomeView(
-    navController: NavController,
-    viewModel: WishViewModel
+    navController: NavController, viewModel: WishViewModel
 ) {
     val context = LocalContext.current
     Scaffold(topBar = {
@@ -42,7 +42,6 @@ fun HomeView(
             backgroundColor = Color.Black,
             onClick = {
                 Toast.makeText(context, "Button clicked", Toast.LENGTH_LONG).show()
-                //TODO: navidate to add screen
                 navController.navigate(Screen.AddScreen.route)
             }) {
 
@@ -52,14 +51,14 @@ fun HomeView(
     }
 
     ) {
+        val wishList = viewModel.getAllWishes.collectAsState(initial = listOf())
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
         ) {
-            items(DummyWish.wishList) { wish ->
-                WishItem(wish = wish) {
-                }
+            items(wishList.value) { wish ->
+                WishItem(wish = wish) {}
             }
         }
     }
