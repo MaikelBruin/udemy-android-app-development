@@ -41,9 +41,9 @@ fun AddEditDetailView(
     val scope = rememberCoroutineScope()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     if (id != 0L) {
-        val wish: Wish = viewModel.getWishById(id).collectAsState(initial = Wish(0L, "", ""))
-        viewModel.wishTitleState = wish.title
-        viewModel.wishDescriptionState = wish.description
+        val wish = viewModel.getWishById(id).collectAsState(initial = Wish(0L, "", ""))
+        viewModel.wishTitleState = wish.value.title
+        viewModel.wishDescriptionState = wish.value.description
     } else {
         viewModel.wishTitleState = ""
         viewModel.wishDescriptionState = ""
