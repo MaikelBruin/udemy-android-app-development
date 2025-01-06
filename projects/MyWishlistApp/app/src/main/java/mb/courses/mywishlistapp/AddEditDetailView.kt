@@ -27,21 +27,17 @@ import androidx.navigation.NavController
 
 @Composable
 fun AddEditDetailView(
-    id: Long,
-    viewModel: WishViewModel,
-    navController: NavController
+    id: Long, viewModel: WishViewModel, navController: NavController
 ) {
-    Scaffold(
-        topBar = {
-            AppBarView(
-                title = if (id != 0L) stringResource(id = R.string.update_wish) else stringResource(
-                    id = R.string.add_wish
-                )
-            ) {
-                navController.navigateUp()
-            }
+    Scaffold(topBar = {
+        AppBarView(
+            title = if (id != 0L) stringResource(id = R.string.update_wish) else stringResource(
+                id = R.string.add_wish
+            )
+        ) {
+            navController.navigateUp()
         }
-    ) {
+    }) {
         Column(
             modifier = Modifier
                 .padding(it)
@@ -50,18 +46,14 @@ fun AddEditDetailView(
             verticalArrangement = Arrangement.Center
         ) {
             Spacer(modifier = Modifier.height(10.dp))
-            WishTextField(
-                label = "Title",
+            WishTextField(label = "Title",
                 value = viewModel.wishTitleState,
-                onValueChanged = { viewModel.onWishTitleChanged(it) }
-            )
+                onValueChanged = { viewModel.onWishTitleChanged(it) })
 
             Spacer(modifier = Modifier.height(10.dp))
-            WishTextField(
-                label = "Description",
+            WishTextField(label = "Description",
                 value = viewModel.wishDescriptionState,
-                onValueChanged = { viewModel.onWishDescriptionChanged(it) }
-            )
+                onValueChanged = { viewModel.onWishDescriptionChanged(it) })
             Spacer(modifier = Modifier.height(10.dp))
             Button(onClick = {
                 if (viewModel.wishTitleState.isNotEmpty() && viewModel.wishDescriptionState.isNotEmpty()) {
@@ -84,23 +76,18 @@ fun AddEditDetailView(
 
 @Composable
 fun WishTextField(
-    label: String,
-    value: String,
-    onValueChanged: (String) -> Unit
+    label: String, value: String, onValueChanged: (String) -> Unit
 ) {
-    OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
+    OutlinedTextField(modifier = Modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
         colors = TextFieldDefaults.outlinedTextFieldColors(),
         value = value,
         onValueChange = onValueChanged,
         label = {
             Text(
-                text = label,
-                color = Color.Black
+                text = label, color = Color.Black
             )
-        }
-    )
+        })
 }
 
 @Preview
