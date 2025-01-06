@@ -3,20 +3,19 @@ package mb.courses.mywishlistapp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,6 +40,14 @@ fun AddEditDetailView(
     }
     val scope = rememberCoroutineScope()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
+    if (id != 0L) {
+        val wish: Wish = viewModel.getWishById(id).collectAsState(initial = Wish(0L, "", ""))
+        viewModel.wishTitleState = wish.title
+        viewModel.wishDescriptionState = wish.description
+    } else {
+        viewModel.wishTitleState = ""
+        viewModel.wishDescriptionState = ""
+    }
 
     Scaffold(scaffoldState = scaffoldState, topBar = {
         AppBarView(
@@ -73,6 +80,7 @@ fun AddEditDetailView(
                     if (id != 0L) {
                         viewModel.updateWish(
                             Wish(
+                                id = id,
                                 title = viewModel.wishTitleState.trim(),
                                 description = viewModel.wishDescriptionState.trim()
                             )
