@@ -14,6 +14,7 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,7 +37,9 @@ fun AddEditDetailView(
                 title = if (id != 0L) stringResource(id = R.string.update_wish) else stringResource(
                     id = R.string.add_wish
                 )
-            )
+            ) {
+                navController.navigateUp()
+            }
         }
     ) {
         Column(
@@ -47,6 +50,32 @@ fun AddEditDetailView(
             verticalArrangement = Arrangement.Center
         ) {
             Spacer(modifier = Modifier.height(10.dp))
+            WishTextField(
+                label = "Title",
+                value = viewModel.wishTitleState,
+                onValueChanged = { viewModel.onWishTitleChanged(it) }
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+            WishTextField(
+                label = "Description",
+                value = viewModel.wishDescriptionState,
+                onValueChanged = { viewModel.onWishDescriptionChanged(it) }
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Button(onClick = {
+                if (viewModel.wishTitleState.isNotEmpty() && viewModel.wishDescriptionState.isNotEmpty()) {
+                    //TODO: update wish
+                } else {
+                    //TODO: add wish
+                }
+            }) {
+                Text(
+                    text = if (id != 0L) stringResource(id = R.string.update_wish) else stringResource(
+                        id = R.string.add_wish
+                    )
+                )
+            }
 
         }
     }
