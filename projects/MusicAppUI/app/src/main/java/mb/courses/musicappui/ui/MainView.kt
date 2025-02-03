@@ -2,6 +2,7 @@ package mb.courses.musicappui.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,11 +28,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.Navigation
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import mb.courses.musicappui.MainViewModel
 import mb.courses.musicappui.Screen
 import mb.courses.musicappui.screensInDrawer
 
@@ -41,57 +48,58 @@ fun MainView() {
 
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     val scope: CoroutineScope = rememberCoroutineScope()
+    val viewModel: MainViewModel = viewModel()
     val controller: NavController = rememberNavController()
     val navBackStackEntry by controller.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
+    val currentScreen = remember {
+        viewModel.currentScreen.value
+    }
+
     val title = remember {
-        //TODO: change to currentScreen.title
-        mutableStateOf("")
+        mutableStateOf(currentScreen.title)
     }
 
 
-    Scaffold(
-        topBar = {
-            TopAppBar(title = { Text("Home") },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        //open the drawer
-                        scope.launch {
-                            scaffoldState.drawerState.open()
-                        }
+    Scaffold(topBar = {
+        TopAppBar(title = { Text("Home") }, navigationIcon = {
+            IconButton(onClick = {
+                //open the drawer
+                scope.launch {
+                    scaffoldState.drawerState.open()
+                }
 
-                    }) {
-                        Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "Menu")
+            }) {
+                Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "Menu")
+            }
+        })
+    }, scaffoldState = scaffoldState, drawerContent = {
+        LazyColumn(Modifier.padding(16.dp)) {
+            items(screensInDrawer) { item ->
+                DrawerItem(selected = currentRoute == item.dRoute, item = item) {
+                    scope.launch {
+                        scaffoldState.drawerState.close()
                     }
-                })
-        }, scaffoldState = scaffoldState,
-        drawerContent = {
-            LazyColumn(Modifier.padding(16.dp)) {
-                items(screensInDrawer) { item ->
-                    DrawerItem(selected = currentRoute == item.dRoute, item = item) {
-                        scope.launch {
-                            scaffoldState.drawerState.close()
-                        }
-                        if (item.dRoute == "add_account") {
-                            //open dialog
-                        } else {
-                            controller.navigate(item.dRoute)
-                            title.value = item.dTitle
-                        }
+                    if (item.dRoute == "add_account") {
+                        //open dialog
+                    } else {
+                        controller.navigate(item.dRoute)
+                        title.value = item.dTitle
                     }
                 }
             }
         }
-    ) {
-        Text("Text", modifier = Modifier.padding(it))
+    }) {
+        Navigation(
+            navController = controller, viewModel = viewModel, pd = it
+        )
     }
 }
 
 @Composable
 fun DrawerItem(
-    selected: Boolean,
-    item: Screen.DrawerScreen,
-    onDrawItemClicked: () -> Unit
+    selected: Boolean, item: Screen.DrawerScreen, onDrawItemClicked: () -> Unit
 ) {
     val background = if (selected) Color.DarkGray else Color.White
 
@@ -109,5 +117,21 @@ fun DrawerItem(
             Modifier.padding(end = 8.dp, top = 4.dp)
         )
         Text(text = item.dTitle, style = MaterialTheme.typography.h5)
+    }
+}
+
+@Composable
+fun Navigation(navController: NavController, viewModel: MainViewModel, pd: PaddingValues) {
+    NavHost(
+        navController = navController as NavHostController,
+        startDestination = Screen.DrawerScreen.AddAccount.route,
+        modifier = Modifier.padding(pd)
+    ) {
+        composable(Screen.DrawerScreen.AddAccount.route) {
+
+        }
+        composable(Screen.DrawerScreen.Subscription.route) {
+
+        }
     }
 }
