@@ -40,14 +40,19 @@ fun SubscriptionView() {
             ) {
                 Column() {
                     Text(text = "Musical")
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
 
                         Text(text = "Free Tier")
                         TextButton(onClick = { /*TODO*/ }) {
                             Row {
                                 Text(text = "See all plans")
-                                Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                                    contentDescription = "See All Plans")
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                                    contentDescription = "See All Plans"
+                                )
                             }
                         }
                     }
