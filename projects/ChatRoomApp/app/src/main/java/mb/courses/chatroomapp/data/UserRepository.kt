@@ -7,13 +7,20 @@ import kotlinx.coroutines.tasks.await
 class UserRepository(private val auth: FirebaseAuth, private val firestore: FirebaseFirestore) {
     suspend fun signUp(
         email: String, password: String, firstName: String, lastName: String
-    ): MBResult<Boolean> = try {
+    ): MbResult<Boolean> = try {
         auth.createUserWithEmailAndPassword(email, password).await()
         val user = User(firstName, lastName, email)
         saveUserToFirestore(user)
-        MBResult.Success(true)
+        MbResult.Success(true)
     } catch (e: Exception) {
-        MBResult.Error(e)
+        MbResult.Error(e)
+    }
+
+    suspend fun login(email: String, password: String): MbResult<Boolean> = try {
+        auth.signInWithEmailAndPassword(email, password).await()
+        MbResult.Success(true)
+    } catch (e: Exception) {
+        MbResult.Error(e)
     }
 
     private suspend fun saveUserToFirestore(user: User) {

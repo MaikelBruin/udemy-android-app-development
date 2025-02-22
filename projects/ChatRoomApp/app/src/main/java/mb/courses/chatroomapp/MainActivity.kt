@@ -32,7 +32,9 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    NavigationGraph(navHostController = navHostController, authViewModel = authViewModel)
+                    NavigationGraph(
+                        navHostController = navHostController, authViewModel = authViewModel
+                    )
                 }
             }
         }
@@ -41,15 +43,19 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun NavigationGraph(
-    navHostController: NavHostController,
-    authViewModel: AuthViewModel
+    navHostController: NavHostController, authViewModel: AuthViewModel
 ) {
     NavHost(navController = navHostController, startDestination = Screen.SignupScreen.route) {
         composable(Screen.SignupScreen.route) {
-            SignupScreen(authViewModel = authViewModel, onNavigateToLogin = { navHostController.navigate(Screen.LoginScreen.route) })
+            SignupScreen(authViewModel = authViewModel,
+                onNavigateToLogin = { navHostController.navigate(Screen.LoginScreen.route) })
         }
         composable(Screen.LoginScreen.route) {
-            LoginScreen(onNavigateToSignup = { navHostController.navigate(Screen.SignupScreen.route) })
+            LoginScreen(authViewModel = authViewModel,
+                onNavigateToSignup = { navHostController.navigate(Screen.SignupScreen.route) },
+                onSignInSuccess = {
+                    navHostController.navigate(Screen.ChatRoomScreen.route)
+                })
         }
     }
 }

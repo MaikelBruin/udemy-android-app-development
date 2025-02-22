@@ -14,6 +14,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -22,13 +23,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import mb.courses.chatroomapp.data.MbResult
+import mb.courses.chatroomapp.viewmodel.AuthViewModel
 
 @Composable
 fun LoginScreen(
-    onNavigateToSignup: () -> Unit
+    authViewModel: AuthViewModel, onNavigateToSignup: () -> Unit, onSignInSuccess: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val result by authViewModel.authResult.observeAsState()
 
     Column(
         modifier = Modifier
@@ -53,6 +57,20 @@ fun LoginScreen(
             visualTransformation = PasswordVisualTransformation()
         )
         Button(onClick = {
+            authViewModel.login(email, password)
+            when (result) {
+                is MbResult.Success -> {
+                    onSignInSuccess()
+                }
+
+                is MbResult.Error -> {
+
+                }
+
+                else -> {
+
+                }
+            }
             email = ""
             password = ""
         }) {
@@ -67,5 +85,5 @@ fun LoginScreen(
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen {}
+//    LoginScreen {}
 }

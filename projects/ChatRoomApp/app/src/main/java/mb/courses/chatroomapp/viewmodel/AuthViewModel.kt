@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
-import mb.courses.chatroomapp.data.MBResult
+import mb.courses.chatroomapp.data.MbResult
 import mb.courses.chatroomapp.data.UserRepository
 
 class AuthViewModel : ViewModel() {
@@ -30,13 +30,19 @@ class AuthViewModel : ViewModel() {
         )
     }
 
-    private val _authResult = MutableLiveData<MBResult<Boolean>>()
-    val authResult: LiveData<MBResult<Boolean>> get() = _authResult
+    private val _authResult = MutableLiveData<MbResult<Boolean>>()
+    val authResult: LiveData<MbResult<Boolean>> get() = _authResult
 
     fun signup(email: String, password: String, firstName: String, lastName: String) {
         viewModelScope.launch {
             _authResult.value = userRepository.signUp(email, password, firstName, lastName)
 
+        }
+    }
+
+    fun login(email: String, password: String) {
+        viewModelScope.launch {
+            _authResult.value = userRepository.login(email, password)
         }
     }
 }
