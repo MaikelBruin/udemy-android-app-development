@@ -99,7 +99,10 @@ fun MainView() {
                 screensInBottom.forEach { item ->
                     val isSelected = currentRoute == item.bRoute
                     BottomNavigationItem(selected = isSelected,
-                        onClick = { controller.navigate(item.bRoute) },
+                        onClick = {
+                            title.value = item.bTitle
+                            controller.navigate(item.bRoute)
+                        },
                         icon = {
                             val tint = if (isSelected) Color.White else Color.Black
                             Icon(
