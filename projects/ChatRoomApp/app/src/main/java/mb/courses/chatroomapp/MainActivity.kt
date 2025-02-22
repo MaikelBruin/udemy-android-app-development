@@ -10,6 +10,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import mb.courses.chatroomapp.screen.LoginScreen
+import mb.courses.chatroomapp.screen.Screen
+import mb.courses.chatroomapp.screen.SignupScreen
 import mb.courses.chatroomapp.ui.theme.ChatRoomAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,12 +24,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ChatRoomAppTheme {
+                val navHostController = rememberNavController()
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    NavigationGraph(navHostController = navHostController)
                 }
             }
         }
@@ -30,17 +37,15 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ChatRoomAppTheme {
-        Greeting("Android")
+fun NavigationGraph(
+    navHostController: NavHostController
+) {
+    NavHost(navController = navHostController, startDestination = Screen.SignupScreen.route) {
+        composable(Screen.SignupScreen.route) {
+            SignupScreen(onNavigateToLogin = { navHostController.navigate(Screen.LoginScreen.route) })
+        }
+        composable(Screen.LoginScreen.route) {
+            LoginScreen(onNavigateToSignup = { navHostController.navigate(Screen.SignupScreen.route) })
+        }
     }
 }
