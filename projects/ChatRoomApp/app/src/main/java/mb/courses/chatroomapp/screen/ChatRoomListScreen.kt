@@ -125,7 +125,7 @@ fun RoomItem(room: Room, onJoinClicked: (Room) -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun ChatRoomListScreenPreview() {
-    ChatRoomListScreen()
+    ChatRoomListScreen() {}
 }
 
 @Preview(showBackground = true)
