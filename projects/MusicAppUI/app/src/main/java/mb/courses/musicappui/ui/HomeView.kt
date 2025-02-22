@@ -22,7 +22,7 @@ import mb.courses.musicappui.R
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Home() {
+fun HomeView() {
     val categories = listOf("Hits", "Happy", "Workout", "Running", "TGIF", "Yoga")
     val grouped = listOf("New releases", "Favorites", "Top Rated").groupBy { it[0] }
     LazyColumn {
