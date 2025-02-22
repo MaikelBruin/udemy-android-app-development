@@ -163,5 +163,14 @@ fun Navigation(navController: NavController, viewModel: MainViewModel, pd: Paddi
         composable(Screen.DrawerScreen.Subscription.route) {
             SubscriptionView()
         }
+        composable(Screen.BottomScreen.Home.route) {
+            //TODO: Add home screen
+        }
+        composable(Screen.BottomScreen.Library.route) {
+            //TODO: Add lib screen
+        }
+        composable(Screen.BottomScreen.Browse.route) {
+            //TODO: Add Browse screen
+        }
     }
 }
