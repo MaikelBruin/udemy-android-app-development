@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -167,7 +168,7 @@ fun Navigation(navController: NavController, viewModel: MainViewModel, pd: Paddi
             HomeView()
         }
         composable(Screen.BottomScreen.Library.route) {
-            //TODO: Add lib screen
+            LibraryView()
         }
         composable(Screen.BottomScreen.Browse.route) {
             BrowseView()
