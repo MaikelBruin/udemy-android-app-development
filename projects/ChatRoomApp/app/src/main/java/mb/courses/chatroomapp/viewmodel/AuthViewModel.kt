@@ -5,23 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
+import mb.courses.chatroomapp.Injection
 import mb.courses.chatroomapp.data.MbResult
 import mb.courses.chatroomapp.data.UserRepository
 
 class AuthViewModel : ViewModel() {
     private val userRepository: UserRepository
-
-    object Injection {
-        private val instance: FirebaseFirestore by lazy {
-            FirebaseFirestore.getInstance()
-        }
-
-        fun instance(): FirebaseFirestore {
-            return instance
-        }
-    }
 
     init {
         userRepository = UserRepository(
@@ -33,7 +23,7 @@ class AuthViewModel : ViewModel() {
     private val _authResult = MutableLiveData<MbResult<Boolean>>()
     val authResult: LiveData<MbResult<Boolean>> get() = _authResult
 
-    fun signup(email: String, password: String, firstName: String, lastName: String) {
+    fun signUp(email: String, password: String, firstName: String, lastName: String) {
         viewModelScope.launch {
             _authResult.value = userRepository.signUp(email, password, firstName, lastName)
 

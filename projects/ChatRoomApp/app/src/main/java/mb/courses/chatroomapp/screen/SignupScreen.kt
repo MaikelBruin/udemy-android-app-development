@@ -68,13 +68,13 @@ fun SignupScreen(
                 .padding(8.dp)
         )
         Button(onClick = {
-            authViewModel.signup(email, password, firstName, lastName)
+            authViewModel.signUp(email, password, firstName, lastName)
             email = ""
             password = ""
             firstName = ""
             lastName = ""
         }) {
-            Text(text = "Signup")
+            Text(text = "Sign Up")
         }
         Text(text = "Already have an account? Log in",
             modifier = Modifier.clickable { onNavigateToLogin() })
