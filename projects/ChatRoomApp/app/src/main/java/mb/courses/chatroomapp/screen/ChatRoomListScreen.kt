@@ -32,7 +32,7 @@ import mb.courses.chatroomapp.viewmodel.RoomViewModel
 
 @Composable
 fun ChatRoomListScreen(
-    roomViewModel: RoomViewModel = viewModel()
+    roomViewModel: RoomViewModel = viewModel(), onJoinClicked: (Room) -> Unit
 ) {
     val rooms by roomViewModel.rooms.observeAsState(emptyList())
     var showDialog by remember {
@@ -52,9 +52,8 @@ fun ChatRoomListScreen(
 
         // Display a list of chat rooms
         LazyColumn {
-            items(rooms) {
-                room ->
-                RoomItem(room = room)
+            items(rooms) { room ->
+                RoomItem(room = room, onJoinClicked = { onJoinClicked(room) })
             }
         }
 
@@ -64,16 +63,15 @@ fun ChatRoomListScreen(
         Button(
             onClick = {
                 showDialog = true
-            },
-            modifier = Modifier.fillMaxWidth()
+            }, modifier = Modifier.fillMaxWidth()
         ) {
             Text("Create Room")
         }
 
-        if (showDialog){
-            AlertDialog( onDismissRequest = { showDialog = true },
+        if (showDialog) {
+            AlertDialog(onDismissRequest = { showDialog = true },
                 title = { Text("Create a new room") },
-                text={
+                text = {
                     OutlinedTextField(
                         value = name,
                         onValueChange = { name = it },
@@ -82,26 +80,24 @@ fun ChatRoomListScreen(
                             .fillMaxWidth()
                             .padding(8.dp)
                     )
-                }, confirmButton = {
+                },
+                confirmButton = {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Button(
-                            onClick = {
-                                if (name.isNotBlank()) {
-                                    showDialog = false
+                        Button(onClick = {
+                            if (name.isNotBlank()) {
+                                roomViewModel.createRoom(name)
+                                showDialog = false
 
-                                }
                             }
-                        ) {
+                        }) {
                             Text("Add")
                         }
-                        Button(
-                            onClick = { showDialog = false }
-                        ) {
+                        Button(onClick = { showDialog = false }) {
                             Text("Cancel")
                         }
                     }
@@ -112,7 +108,7 @@ fun ChatRoomListScreen(
 }
 
 @Composable
-fun RoomItem(room: Room) {
+fun RoomItem(room: Room, onJoinClicked: (Room) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -120,9 +116,7 @@ fun RoomItem(room: Room) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(text = room.name, fontSize = 16.sp, fontWeight = FontWeight.Normal)
-        OutlinedButton(
-            onClick = {  }
-        ) {
+        OutlinedButton(onClick = { onJoinClicked(room) }) {
             Text("Join")
         }
     }
@@ -137,5 +131,5 @@ fun ChatRoomListScreenPreview() {
 @Preview(showBackground = true)
 @Composable
 fun RoomItemPreview() {
-    RoomItem(room = Room("2", "Some Room"))
+    RoomItem(room = Room("2", "Some Room")) {}
 }
