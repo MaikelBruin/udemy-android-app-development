@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,6 +19,7 @@ import mb.courses.chatroomapp.screen.LoginScreen
 import mb.courses.chatroomapp.screen.Screen
 import mb.courses.chatroomapp.screen.SignupScreen
 import mb.courses.chatroomapp.ui.theme.ChatRoomAppTheme
+import mb.courses.chatroomapp.viewmodel.AuthViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,11 +27,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             ChatRoomAppTheme {
                 val navHostController = rememberNavController()
+                val authViewModel: AuthViewModel = viewModel()
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    NavigationGraph(navHostController = navHostController)
+                    NavigationGraph(navHostController = navHostController, authViewModel = authViewModel)
                 }
             }
         }
@@ -38,11 +41,12 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun NavigationGraph(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    authViewModel: AuthViewModel
 ) {
     NavHost(navController = navHostController, startDestination = Screen.SignupScreen.route) {
         composable(Screen.SignupScreen.route) {
-            SignupScreen(onNavigateToLogin = { navHostController.navigate(Screen.LoginScreen.route) })
+            SignupScreen(authViewModel = authViewModel, onNavigateToLogin = { navHostController.navigate(Screen.LoginScreen.route) })
         }
         composable(Screen.LoginScreen.route) {
             LoginScreen(onNavigateToSignup = { navHostController.navigate(Screen.SignupScreen.route) })
